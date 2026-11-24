@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+case "$1" in
+  ftp) shift; ftp-share "$@" ;;
+  http) shift; http-share "$@" ;;
+  sftp) shift; sftp-send "$@" ;;
+  localsend) shift; localsend-start "$@" ;;
+  pairdrop) shift; pairdrop-open "$@" ;;
+  syncthing) shift; syncthing-start "$@" ;;
+  smb) shift; smb-info "$@" ;;
+  *)
+    echo "ShareHub (6 + FTP):"
+    echo "  sharehub ftp [slozka] [port]"
+    echo "  sharehub http [slozka] [port]"
+    echo "  sharehub sftp <soubor> <user@host:/cesta>"
+    echo "  sharehub localsend"
+    echo "  sharehub pairdrop [url]"
+    echo "  sharehub syncthing"
+    echo "  sharehub smb"
+    ;;
+esac

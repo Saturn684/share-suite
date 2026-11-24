@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+URL="${1:-https://pairdrop.net}"
+echo "Oteviram prohlizecove sdileni: $URL"
+if command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$URL" >/dev/null 2>&1 &
+fi

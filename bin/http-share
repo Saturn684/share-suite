@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+DIR="${1:-$HOME/shared}"
+PORT="${2:-8080}"
+mkdir -p "$DIR"
+echo "HTTP server na http://0.0.0.0:$PORT | Slozka: $DIR"
+python3 -m http.server "$PORT" --directory "$DIR"

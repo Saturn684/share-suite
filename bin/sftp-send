@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ "$#" -lt 2 ]; then
+  echo "Pouziti: sftp-send <soubor> <uzivatel@host:/cilova/cesta>"
+  exit 1
+fi
+scp "$1" "$2"
