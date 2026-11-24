@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
-case "$1" in
-  ftp) shift; ftp-share "$@" ;;
-  http) shift; http-share "$@" ;;
-  sftp) shift; sftp-send "$@" ;;
-  localsend) shift; localsend-start "$@" ;;
-  pairdrop) shift; pairdrop-open "$@" ;;
-  syncthing) shift; syncthing-start "$@" ;;
-  smb) shift; smb-info "$@" ;;
+set -euo pipefail
+
+BIN_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+export PATH="$BIN_DIR:$PATH"
+
+cmd="${1:-}"
+shift || true
+
+case "$cmd" in
+  ftp)       exec "$BIN_DIR/ftp-share" "$@" ;;
+  http)      exec "$BIN_DIR/http-share" "$@" ;;
+  sftp)      exec "$BIN_DIR/sftp-send" "$@" ;;
+  localsend) exec "$BIN_DIR/localsend-start" "$@" ;;
+  pairdrop)  exec "$BIN_DIR/pairdrop-open" "$@" ;;
+  syncthing) exec "$BIN_DIR/syncthing-start" "$@" ;;
+  smb)       exec "$BIN_DIR/smb-info" "$@" ;;
   *)
-    echo "ShareHub (6 + FTP):"
-    echo "  sharehub ftp [slozka] [port]"
-    echo "  sharehub http [slozka] [port]"
-    echo "  sharehub sftp <soubor> <user@host:/cesta>"
-    echo "  sharehub localsend"
-    echo "  sharehub pairdrop [url]"
-    echo "  sharehub syncthing"
-    echo "  sharehub smb"
+    cat <<'EOF'
+ShareHub (6 + FTP):
+  sharehub ftp [slozka] [port]
+  sharehub http [slozka] [port]
+  sharehub sftp <soubor> <user@host:/cesta>
+  sharehub localsend
+  sharehub pairdrop [url]
+  sharehub syncthing
+  sharehub smb
+EOF
     ;;
 esac

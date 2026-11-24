@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ShareHub v1.0.1</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 24px;
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+.badge {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+h1 { margin: 12px 0 6px; font-size: 28px; }
+p { color: var(--muted); margin-top: 0; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.cmd {
+  font-family: monospace;
+  color: var(--accent);
+  background: #0b1120;
+  padding: 6px 8px;
+  border-radius: 6px;
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: var(--card);
+  color: var(--text);
+  font-size: 15px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<span class="badge">verze 1.0.1</span>
+<h1>ShareHub</h1>
+<p>Rychlý přehled příkazů pro sdílení souborů.</p>
+
+<input id="filter" type="text" placeholder="Filtrovat příkaz (např. http, ftp, smb)..." />
+
+<div class="grid" id="list"></div>
+</div>
+
+<script>
+const tools = [
+  { name: "HTTP", cmd: "sharehub http [slozka] [port]", desc: "Rychlé sdílení přes prohlížeč." },
+  { name: "FTP", cmd: "sharehub ftp [slozka] [port]", desc: "Sdílení složky přes FTP." },
+  { name: "SFTP", cmd: "sharehub sftp <soubor> <user@host:/cesta>", desc: "Přenos souboru přes SSH/SCP." },
+  { name: "LocalSend", cmd: "sharehub localsend", desc: "Lokální sdílení v síti." },
+  { name: "PairDrop", cmd: "sharehub pairdrop [url]", desc: "Sdílení v prohlížeči." },
+  { name: "Syncthing", cmd: "sharehub syncthing", desc: "Synchronizace složek." },
+  { name: "SMB", cmd: "sharehub smb", desc: "Výpis IP adres pro SMB." }
+];
+
+const listEl = document.getElementById("list");
+const filterEl = document.getElementById("filter");
+
+function render() {
+  const q = filterEl.value.trim().toLowerCase();
+  const filtered = tools.filter(t =>
+    t.name.toLowerCase().includes(q) ||
+    t.cmd.toLowerCase().includes(q) ||
+    t.desc.toLowerCase().includes(q)
+  );
+  listEl.innerHTML = filtered.map(t => `
+    <div class="card">
+      <strong>${t.name}</strong>
+      <div style="color:#cbd5e1;font-size:14px;margin-top:4px;">${t.desc}</div>
+      <code class="cmd">${t.cmd}</code>
+    </div>
+  `).join("");
+}
+
+filterEl.addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
